@@ -1,8 +1,10 @@
-import SwiftUI
 import AppKit
+import SwiftUI
 
 struct MenuPetIcon: View {
-    let kind: PetKind; let mood: Int; let frame: Bool
+    let kind: PetKind
+    let mood: Int
+    let frame: Bool
 
     var body: some View {
         Image(nsImage: PixelMenuImage.make(kind: kind, happy: mood > 55, frame: frame))
@@ -16,27 +18,34 @@ private enum PixelMenuImage {
         let image = NSImage(size: NSSize(width: 18, height: 18))
         image.lockFocus()
         NSGraphicsContext.current?.imageInterpolation = .none
-        let fur: NSColor = switch kind {
-        case .cat: NSColor(calibratedRed: 0.98, green: 0.66, blue: 0.36, alpha: 1)
-        case .rabbit: .systemPink
-        case .bear: NSColor(calibratedRed: 0.56, green: 0.35, blue: 0.22, alpha: 1)
-        }
+
+        let definition = kind.definition
+        let fur = definition.menuColor
         let dark = NSColor(calibratedRed: 0.16, green: 0.11, blue: 0.16, alpha: 1)
-        func pixel(_ x: Int, _ y: Int, _ color: NSColor) {
+        func pixel(column: Int, row: Int, color: NSColor) {
             color.setFill()
-            NSBezierPath(rect: NSRect(x: x * 2, y: (8 - y) * 2, width: 2, height: 2)).fill()
+            NSBezierPath(
+                rect: NSRect(x: column * 2, y: (8 - row) * 2, width: 2, height: 2)
+            ).fill()
         }
-        // An 8×8 native bitmap keeps the menu-bar art crisp at Retina scale.
-        [(2,2),(5,2),(1,3),(6,3),(1,4),(6,4),(2,5),(3,5),(4,5),(5,5),(2,6),(3,6),(4,6),(5,6),(3,7),(4,7)].forEach { pixel($0.0, $0.1, fur) }
-        switch kind {
-        case .cat: pixel(2, 1, dark); pixel(5, 1, dark)
-        case .rabbit:
-            pixel(2, 0, fur); pixel(5, 0, fur); pixel(2, 1, fur); pixel(5, 1, fur)
-        case .bear: pixel(1, 2, fur); pixel(6, 2, fur)
+
+        definition.menuPixels.forEach { detail in
+            pixel(
+                column: detail.column,
+                row: detail.row,
+                color: detail.color.nsColor(fur: fur, dark: dark, cream: NSColor.white)
+            )
         }
-        pixel(2, 3, dark); pixel(5, 3, dark); pixel(3, 4, dark)
-        if happy { pixel(4, 4, dark) } else { pixel(3, 5, dark); pixel(4, 5, dark) }
-        pixel(frame ? 6 : 7, 6, fur)
+        pixel(column: 2, row: 3, color: dark)
+        pixel(column: 5, row: 3, color: dark)
+        pixel(column: 3, row: 4, color: dark)
+        if happy {
+            pixel(column: 4, row: 4, color: dark)
+        } else {
+            pixel(column: 3, row: 5, color: dark)
+            pixel(column: 4, row: 5, color: dark)
+        }
+        pixel(column: frame ? 6 : 7, row: 6, color: fur)
         image.unlockFocus()
         image.isTemplate = false
         return image
@@ -44,31 +53,63 @@ private enum PixelMenuImage {
 }
 
 struct PixelPet: View {
-    let kind: PetKind; let mood: Int; let hungry, sleepy, frame: Bool
+    let kind: PetKind
+    let mood: Int
+    let hungry: Bool
+    let sleepy: Bool
+    let frame: Bool
+
     private var fur: Color { kind.color }
 
     var body: some View {
-        GeometryReader { geo in
-            let u = min(geo.size.width / 16, geo.size.height / 12)
-            let x = (geo.size.width - 16 * u) / 2, y = (geo.size.height - 12 * u) / 2
+        GeometryReader { geometry in
+            let pixelSize = min(geometry.size.width / 16, geometry.size.height / 12)
+            let originX = (geometry.size.width - 16 * pixelSize) / 2
+            let originY = (geometry.size.height - 12 * pixelSize) / 2
             Canvas { context, _ in
-                func p(_ px: Int, _ py: Int, _ w: Int = 1, _ h: Int = 1, _ color: Color) {
-                    context.fill(Path(CGRect(x: x + CGFloat(px) * u, y: y + CGFloat(py) * u, width: CGFloat(w) * u, height: CGFloat(h) * u)), with: .color(color))
+                func pixel(column: Int, row: Int, width: Int = 1, height: Int = 1, color: Color) {
+                    context.fill(
+                        Path(
+                            CGRect(
+                                x: originX + CGFloat(column) * pixelSize,
+                                y: originY + CGFloat(row) * pixelSize,
+                                width: CGFloat(width) * pixelSize,
+                                height: CGFloat(height) * pixelSize
+                            )
+                        ),
+                        with: .color(color)
+                    )
                 }
-                let dark = Color(red: 0.20, green: 0.12, blue: 0.17), cream = Color(red: 1, green: 0.84, blue: 0.57)
-                [(3,2),(4,2),(11,2),(12,2),(2,3),(13,3),(2,4),(13,4),(3,5),(12,5),(3,6),(12,6),(4,7),(5,7),(6,7),(7,7),(8,7),(9,7),(10,7),(5,8),(6,8),(7,8),(8,8),(9,8),(10,8),(4,9),(5,9),(6,9),(7,9),(8,9),(9,9),(10,9),(11,9)].forEach { p($0.0, $0.1, 1, 1, fur) }
-                if kind == .rabbit {
-                    p(3, 0, 2, 4, fur); p(11, 0, 2, 4, fur); p(4, 0, 1, 3, cream); p(11, 0, 1, 3, cream)
-                } else if kind == .bear {
-                    p(2, 2, 2, 2, fur); p(12, 2, 2, 2, fur); p(3, 2, 1, 1, cream); p(12, 2, 1, 1, cream)
+
+                let dark = Color(red: 0.20, green: 0.12, blue: 0.17)
+                let cream = Color(red: 1, green: 0.84, blue: 0.57)
+                let definition = kind.definition
+                definition.bodyPixels.forEach { detail in
+                    pixel(
+                        column: detail.column,
+                        row: detail.row,
+                        width: detail.width,
+                        height: detail.height,
+                        color: detail.color.color(fur: fur, dark: dark, cream: cream)
+                    )
+                }
+                if sleepy {
+                    pixel(column: 5, row: 5, width: 2, color: dark)
+                    pixel(column: 10, row: 5, width: 2, color: dark)
                 } else {
-                    p(3, 2, 2, 2, dark); p(11, 2, 2, 2, dark); p(4, 3, 1, 1, cream); p(11, 3, 1, 1, cream)
+                    pixel(column: 5, row: 5, color: dark)
+                    pixel(column: 10, row: 5, color: dark)
                 }
-                if sleepy { p(5, 5, 2, 1, dark); p(10, 5, 2, 1, dark) } else { p(5, 5, 1, 1, dark); p(10, 5, 1, 1, dark) }
-                p(8, 6, 1, 1, dark)
-                if hungry { p(7, 7, 2, 1, dark) } else if mood > 55 { p(7, 7, 1, 1, dark); p(9, 7, 1, 1, dark) } else { p(7, 8, 2, 1, dark) }
-                p(4, 10, 2, 1, cream); p(10, 10, 2, 1, cream)
-                p(frame ? 12 : 13, 9, 2, 1, fur); p(frame ? 14 : 15, 8, 1, 1, fur)
+                pixel(column: 8, row: 6, color: dark)
+                if hungry {
+                    pixel(column: 7, row: 7, width: 2, color: dark)
+                } else if mood > 55 {
+                    pixel(column: 7, row: 7, color: dark)
+                    pixel(column: 9, row: 7, color: dark)
+                } else {
+                    pixel(column: 7, row: 8, width: 2, color: dark)
+                }
+
             }
         }
     }
