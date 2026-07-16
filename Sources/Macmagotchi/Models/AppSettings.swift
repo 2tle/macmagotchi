@@ -33,12 +33,13 @@ enum AppLanguage: String, CaseIterable, Identifiable {
 final class AppSettings: ObservableObject {
     @Published var language: AppLanguage { didSet { UserDefaults.standard.set(language.rawValue, forKey: "language") } }
     @Published var theme: AppTheme { didSet { UserDefaults.standard.set(theme.rawValue, forKey: "theme") } }
+    @Published var showsDesktopPet: Bool { didSet { UserDefaults.standard.set(showsDesktopPet, forKey: "showsDesktopPet") } }
     @Published var petMinutes: Int { didSet { UserDefaults.standard.set(petMinutes, forKey: "petMinutes") } }
     @Published var playMinutes: Int { didSet { UserDefaults.standard.set(playMinutes, forKey: "playMinutes") } }
     @Published var feedMinutes: Int { didSet { UserDefaults.standard.set(feedMinutes, forKey: "feedMinutes") } }
     @Published var sleepMinutes: Int { didSet { UserDefaults.standard.set(sleepMinutes, forKey: "sleepMinutes") } }
 
-    init() { theme = AppTheme(rawValue: UserDefaults.standard.string(forKey: "theme") ?? "pastel") ?? .pastel; petMinutes = UserDefaults.standard.object(forKey: "petMinutes") as? Int ?? 10; playMinutes = UserDefaults.standard.object(forKey: "playMinutes") as? Int ?? 30; feedMinutes = UserDefaults.standard.object(forKey: "feedMinutes") as? Int ?? 60; sleepMinutes = UserDefaults.standard.object(forKey: "sleepMinutes") as? Int ?? 180; language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "language") ?? "en") ?? .english }
+    init() { showsDesktopPet = UserDefaults.standard.object(forKey: "showsDesktopPet") as? Bool ?? true; theme = AppTheme(rawValue: UserDefaults.standard.string(forKey: "theme") ?? "pastel") ?? .pastel; petMinutes = UserDefaults.standard.object(forKey: "petMinutes") as? Int ?? 10; playMinutes = UserDefaults.standard.object(forKey: "playMinutes") as? Int ?? 30; feedMinutes = UserDefaults.standard.object(forKey: "feedMinutes") as? Int ?? 60; sleepMinutes = UserDefaults.standard.object(forKey: "sleepMinutes") as? Int ?? 180; language = AppLanguage(rawValue: UserDefaults.standard.string(forKey: "language") ?? "en") ?? .english }
     func t(_ key: String) -> String { strings[language]?[key] ?? key }
     func minutes(_ task: PetTask) -> Int { switch task { case .pet: petMinutes; case .play: playMinutes; case .feed: feedMinutes; case .sleep: sleepMinutes } }
     func minutesBinding(_ task: PetTask) -> Binding<Int> { Binding(get: { self.minutes(task) }, set: { switch task { case .pet: self.petMinutes = $0; case .play: self.playMinutes = $0; case .feed: self.feedMinutes = $0; case .sleep: self.sleepMinutes = $0 } }) }

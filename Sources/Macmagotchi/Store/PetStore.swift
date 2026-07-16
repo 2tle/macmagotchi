@@ -30,6 +30,7 @@ final class PetStore: ObservableObject {
             Task { @MainActor in self?.frame.toggle() }
         }
         requestNotifications()
+        DispatchQueue.main.async { DesktopPetController.shared.show(pet: self) }
     }
 
     func stage(_ settings: AppSettings) -> String { affection >= 100 ? settings.t("grown", ["kind": settings.t(kind.titleKey)]) : affection >= 45 ? settings.t("growing") : settings.t("baby", ["kind": settings.t(kind.titleKey)]) }

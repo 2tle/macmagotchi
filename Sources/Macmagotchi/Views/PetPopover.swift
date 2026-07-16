@@ -116,6 +116,11 @@ struct SettingsView: View {
                 SettingsRow(icon: "globe", title: settings.t("language"), value: settings.language.title)
             }.menuStyle(.borderlessButton)
             Divider()
+            Toggle(isOn: $settings.showsDesktopPet) {
+                SettingsRow(icon: "figure.walk", title: "Desktop Pet")
+            }.toggleStyle(.switch)
+                .onChange(of: settings.showsDesktopPet) { _, visible in DesktopPetController.shared.setVisible(visible, pet: pet) }
+            Divider()
             Button {
                 NSWorkspace.shared.open(URL(string: "https://github.com/2tle/macmagotchi")!)
             } label: {
