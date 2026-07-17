@@ -10,13 +10,14 @@ final class PetStore: ObservableObject {
     @Published var mood = 82
     @Published var energy = 68
     @Published var affection = 31
-    @Published var frame = false
+    @Published var animationTick = 0
     @Published var lastAction = "idle"
     @Published var activeTask: PetTask?
     @Published var secondsRemaining = 0
     @Published var focusTotalSeconds = 0
 
     private var timer: Timer?
+    private var animationTimer: Timer?
     private var lastNotice = Date.distantPast
     private var focusTimer: Timer?
 
@@ -26,14 +27,20 @@ final class PetStore: ObservableObject {
         timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tick() }
         }
-        Timer.scheduledTimer(withTimeInterval: 0.55, repeats: true) { [weak self] _ in
-            Task { @MainActor in self?.frame.toggle() }
+        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.55, repeats: true) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                self.animationTick = (self.animationTick + 1) % 6
+            }
         }
         requestNotifications()
         DispatchQueue.main.async { DesktopPetController.shared.show(pet: self) }
     }
 
-    func stage(_ settings: AppSettings) -> String { affection >= 100 ? settings.t("grown", ["kind": settings.t(kind.titleKey)]) : affection >= 45 ? settings.t("growing") : settings.t("baby", ["kind": settings.t(kind.titleKey)]) }
+    func stage(_ settings: AppSettings) -> String {
+        affection >= 100 ? settings.t("grown", ["kind": settings.t(kind.titleKey)]) :
+            affection >= 45 ? settings.t("growing") : settings.t("baby", ["kind": settings.t(kind.titleKey)])
+    }
     var level: Int { min(5, affection / 25 + 1) }
     var isSleepy: Bool { energy < 30 }
     var isHungry: Bool { hunger < 30 }
@@ -60,7 +67,12 @@ final class PetStore: ObservableObject {
         secondsRemaining -= 1
         guard secondsRemaining <= 0, let task = activeTask else { return }
         focusTimer?.invalidate(); focusTimer = nil; activeTask = nil
-        switch task { case .feed: change(hunger: 24, mood: 5, affection: 2, message: "feed"); case .play: change(hunger: -8, mood: 20, energy: -13, affection: 5, message: "play"); case .sleep: change(hunger: -3, mood: 4, energy: 28, message: "sleep"); case .pet: change(mood: 10, affection: 7, message: "pet") }
+        switch task {
+        case .feed: change(hunger: 24, mood: 5, affection: 2, message: "feed")
+        case .play: change(hunger: -8, mood: 20, energy: -13, affection: 5, message: "play")
+        case .sleep: change(hunger: -3, mood: 4, energy: 28, message: "sleep")
+        case .pet: change(mood: 10, affection: 7, message: "pet")
+        }
     }
 
     private func change(hunger: Int = 0, mood: Int = 0, energy: Int = 0, affection: Int = 0, message: String) {

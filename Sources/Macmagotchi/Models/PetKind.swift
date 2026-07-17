@@ -23,6 +23,27 @@ struct PetDefinition {
     // Each pet owns every non-transparent pixel; later pixels draw on top.
     let menuPixels: [PetPixel]
     let bodyPixels: [PetPixel]
+    let animations: PetAnimations
+}
+
+enum PetMotion {
+    case idle, walking
+}
+
+struct PetAnimations {
+    let idle: [PetSpriteFrame]
+    let walking: [PetSpriteFrame]
+
+    func frame(for motion: PetMotion, tick: Int) -> PetSpriteFrame {
+        let frames = motion == .idle ? idle : walking
+        return frames[tick % frames.count]
+    }
+}
+
+struct PetSpriteFrame {
+    let pixels: [PetPixel]
+    var verticalOffset = 0
+    var blinks = false
 }
 
 struct PetPixel {

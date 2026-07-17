@@ -25,7 +25,7 @@ struct PetPopover: View {
                     }
                     ZStack(alignment: .bottom) {
                         RoundedRectangle(cornerRadius: 22).fill(settings.theme.panel).overlay(alignment: .topTrailing) { Circle().fill(.white.opacity(0.45)).frame(width: 8).padding(18) }
-                        PixelPet(kind: pet.kind, mood: pet.mood, hungry: pet.isHungry, sleepy: pet.isSleepy, frame: pet.frame)
+                        PixelPet(kind: pet.kind, mood: pet.mood, hungry: pet.isHungry, sleepy: pet.isSleepy, motion: .idle, tick: pet.animationTick)
                             .frame(width: 165, height: 125).padding(.bottom, 5)
                     }.frame(height: 145)
                     Text(settings.t(pet.lastAction, ["food": settings.t(pet.kind.foodKey)]))
@@ -99,7 +99,7 @@ struct WelcomeView: View {
                 ForEach(PetKind.allCases, id: \.self) { option in
                     Button { kind = option } label: {
                         VStack(spacing: 6) {
-                            PixelPet(kind: option, mood: 90, hungry: false, sleepy: false, frame: false)
+                            PixelPet(kind: option, mood: 90, hungry: false, sleepy: false, motion: .idle, tick: 0)
                                 .frame(height: 62)
                             Text(settings.t(option.titleKey)).font(.caption.weight(.bold))
                         }.frame(maxWidth: .infinity).padding(.vertical, 9)

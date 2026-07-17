@@ -11,7 +11,8 @@ final class DesktopPetController {
     func show(pet: PetStore) {
         guard UserDefaults.standard.object(forKey: "showsDesktopPet") as? Bool ?? true, panel == nil, let screen = NSScreen.main else { return }
         let view = NSHostingView(rootView: DesktopPetOverlay(pet: pet))
-        let panel = NSPanel(contentRect: NSRect(x: screen.visibleFrame.midX - 70, y: screen.visibleFrame.minY + 22, width: 140, height: 130), styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
+        let frame = NSRect(x: screen.visibleFrame.midX - 70, y: screen.visibleFrame.minY + 22, width: 140, height: 130)
+        let panel = NSPanel(contentRect: frame, styleMask: [.borderless, .nonactivatingPanel], backing: .buffered, defer: false)
         panel.contentView = view
         panel.isOpaque = false
         panel.backgroundColor = .clear
@@ -46,7 +47,7 @@ private struct DesktopPetOverlay: View {
 
     var body: some View {
         VStack(spacing: 2) {
-            PixelPet(kind: pet.kind, mood: pet.mood, hungry: pet.isHungry, sleepy: pet.isSleepy || pet.isFocusing, frame: pet.frame)
+            PixelPet(kind: pet.kind, mood: pet.mood, hungry: pet.isHungry, sleepy: pet.isSleepy || pet.isFocusing, motion: .walking, tick: pet.animationTick)
                 .frame(width: 92, height: 80)
             Capsule().fill(.black.opacity(0.16)).frame(width: 74, height: 7)
         }

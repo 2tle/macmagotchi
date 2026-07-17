@@ -1,0 +1,293 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A10000000000000000000001 /* MacmagotchiApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000001 /* MacmagotchiApp.swift */; };
+		A10000000000000000000002 /* AppSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000002 /* AppSettings.swift */; };
+		A10000000000000000000003 /* PetKind.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000003 /* PetKind.swift */; };
+		A10000000000000000000004 /* Bear.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000004 /* Bear.swift */; };
+		A10000000000000000000005 /* Cat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000005 /* Cat.swift */; };
+		A10000000000000000000006 /* Rabbit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000006 /* Rabbit.swift */; };
+		A10000000000000000000007 /* PetFileStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000007 /* PetFileStore.swift */; };
+		A10000000000000000000008 /* PetStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000008 /* PetStore.swift */; };
+		A10000000000000000000009 /* DesktopPet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* DesktopPet.swift */; };
+		A1000000000000000000000A /* PetPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* PetPopover.swift */; };
+		A1000000000000000000000B /* PixelPet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* PixelPet.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A20000000000000000000001 /* MacmagotchiApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MacmagotchiApp.swift; sourceTree = "<group>"; };
+		A20000000000000000000002 /* AppSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSettings.swift; sourceTree = "<group>"; };
+		A20000000000000000000003 /* PetKind.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetKind.swift; sourceTree = "<group>"; };
+		A20000000000000000000004 /* Bear.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bear.swift; sourceTree = "<group>"; };
+		A20000000000000000000005 /* Cat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Cat.swift; sourceTree = "<group>"; };
+		A20000000000000000000006 /* Rabbit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Rabbit.swift; sourceTree = "<group>"; };
+		A20000000000000000000007 /* PetFileStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetFileStore.swift; sourceTree = "<group>"; };
+		A20000000000000000000008 /* PetStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetStore.swift; sourceTree = "<group>"; };
+		A20000000000000000000009 /* DesktopPet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DesktopPet.swift; sourceTree = "<group>"; };
+		A2000000000000000000000A /* PetPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPopover.swift; sourceTree = "<group>"; };
+		A2000000000000000000000B /* PixelPet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelPet.swift; sourceTree = "<group>"; };
+		A2000000000000000000000C /* Macmagotchi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Macmagotchi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A60000000000000000000002 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A30000000000000000000001 = {
+			isa = PBXGroup;
+			children = (
+				A30000000000000000000002 /* Sources/Macmagotchi */,
+				A30000000000000000000006 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A30000000000000000000002 /* Sources/Macmagotchi */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000001 /* MacmagotchiApp.swift */,
+				A30000000000000000000003 /* Models */,
+				A30000000000000000000004 /* Pets */,
+				A30000000000000000000005 /* Store */,
+				A30000000000000000000007 /* Views */,
+			);
+			path = Sources/Macmagotchi;
+			sourceTree = SOURCE_ROOT;
+		};
+		A30000000000000000000003 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000002 /* AppSettings.swift */,
+				A20000000000000000000003 /* PetKind.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000004 /* Pets */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000004 /* Bear.swift */,
+				A20000000000000000000005 /* Cat.swift */,
+				A20000000000000000000006 /* Rabbit.swift */,
+			);
+			path = Pets;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000005 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000007 /* PetFileStore.swift */,
+				A20000000000000000000008 /* PetStore.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000006 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A2000000000000000000000C /* Macmagotchi.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A30000000000000000000007 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A20000000000000000000009 /* DesktopPet.swift */,
+				A2000000000000000000000A /* PetPopover.swift */,
+				A2000000000000000000000B /* PixelPet.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A40000000000000000000001 /* Macmagotchi */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A50000000000000000000002 /* Build configuration list for PBXNativeTarget "Macmagotchi" */;
+			buildPhases = (
+				A60000000000000000000001 /* Sources */,
+				A60000000000000000000002 /* Frameworks */,
+				A60000000000000000000003 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Macmagotchi;
+			productName = Macmagotchi;
+			productReference = A2000000000000000000000C /* Macmagotchi.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A40000000000000000000000 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 2600;
+				LastUpgradeCheck = 2600;
+				TargetAttributes = {
+					A40000000000000000000001 = {
+						CreatedOnToolsVersion = 26.0;
+					};
+				};
+			};
+			buildConfigurationList = A50000000000000000000001 /* Build configuration list for PBXProject "Macmagotchi" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A30000000000000000000001;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = A30000000000000000000006 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A40000000000000000000001 /* Macmagotchi */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A60000000000000000000003 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A60000000000000000000001 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000001 /* MacmagotchiApp.swift in Sources */,
+				A10000000000000000000002 /* AppSettings.swift in Sources */,
+				A10000000000000000000003 /* PetKind.swift in Sources */,
+				A10000000000000000000004 /* Bear.swift in Sources */,
+				A10000000000000000000005 /* Cat.swift in Sources */,
+				A10000000000000000000006 /* Rabbit.swift in Sources */,
+				A10000000000000000000007 /* PetFileStore.swift in Sources */,
+				A10000000000000000000008 /* PetStore.swift in Sources */,
+				A10000000000000000000009 /* DesktopPet.swift in Sources */,
+				A1000000000000000000000A /* PetPopover.swift in Sources */,
+				A1000000000000000000000B /* PixelPet.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		A70000000000000000000001 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000002 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ENABLE_MODULES = YES;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+		A70000000000000000000003 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GAZ2N6MA45;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Macmagotchi;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.twotle.macmagotchi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Debug;
+		};
+		A70000000000000000000004 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = GAZ2N6MA45;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = Macmagotchi;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = io.twotle.macmagotchi;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_STRICT_CONCURRENCY = complete;
+				SWIFT_VERSION = 6.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A50000000000000000000001 /* Build configuration list for PBXProject "Macmagotchi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000001 /* Debug */,
+				A70000000000000000000002 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A50000000000000000000002 /* Build configuration list for PBXNativeTarget "Macmagotchi" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A70000000000000000000003 /* Debug */,
+				A70000000000000000000004 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A40000000000000000000000 /* Project object */;
+}

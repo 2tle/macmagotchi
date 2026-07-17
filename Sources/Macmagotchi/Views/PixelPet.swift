@@ -4,17 +4,17 @@ import SwiftUI
 struct MenuPetIcon: View {
     let kind: PetKind
     let mood: Int
-    let frame: Bool
+    let tick: Int
 
     var body: some View {
-        Image(nsImage: PixelMenuImage.make(kind: kind, happy: mood > 55, frame: frame))
+        Image(nsImage: PixelMenuImage.make(kind: kind, happy: mood > 55, tick: tick))
             .interpolation(.none)
             .frame(width: 18, height: 18)
     }
 }
 
 private enum PixelMenuImage {
-    static func make(kind: PetKind, happy: Bool, frame: Bool) -> NSImage {
+    static func make(kind: PetKind, happy: Bool, tick: Int) -> NSImage {
         let image = NSImage(size: NSSize(width: 18, height: 18))
         image.lockFocus()
         NSGraphicsContext.current?.imageInterpolation = .none
@@ -45,7 +45,7 @@ private enum PixelMenuImage {
             pixel(column: 3, row: 5, color: dark)
             pixel(column: 4, row: 5, color: dark)
         }
-        pixel(column: frame ? 6 : 7, row: 6, color: fur)
+        pixel(column: tick.isMultiple(of: 2) ? 6 : 7, row: 6, color: fur)
         image.unlockFocus()
         image.isTemplate = false
         return image
@@ -57,7 +57,8 @@ struct PixelPet: View {
     let mood: Int
     let hungry: Bool
     let sleepy: Bool
-    let frame: Bool
+    let motion: PetMotion
+    let tick: Int
 
     private var fur: Color { kind.color }
 
@@ -67,12 +68,13 @@ struct PixelPet: View {
             let originX = (geometry.size.width - 16 * pixelSize) / 2
             let originY = (geometry.size.height - 12 * pixelSize) / 2
             Canvas { context, _ in
+                var verticalOffset = 0
                 func pixel(column: Int, row: Int, width: Int = 1, height: Int = 1, color: Color) {
                     context.fill(
                         Path(
                             CGRect(
                                 x: originX + CGFloat(column) * pixelSize,
-                                y: originY + CGFloat(row) * pixelSize,
+                                y: originY + CGFloat(row + verticalOffset) * pixelSize,
                                 width: CGFloat(width) * pixelSize,
                                 height: CGFloat(height) * pixelSize
                             )
@@ -84,7 +86,9 @@ struct PixelPet: View {
                 let dark = Color(red: 0.20, green: 0.12, blue: 0.17)
                 let cream = Color(red: 1, green: 0.84, blue: 0.57)
                 let definition = kind.definition
-                definition.bodyPixels.forEach { detail in
+                let sprite = definition.animations.frame(for: motion, tick: tick)
+                verticalOffset = sprite.verticalOffset
+                (definition.bodyPixels + sprite.pixels).forEach { detail in
                     pixel(
                         column: detail.column,
                         row: detail.row,
@@ -93,7 +97,7 @@ struct PixelPet: View {
                         color: detail.color.color(fur: fur, dark: dark, cream: cream)
                     )
                 }
-                if sleepy {
+                if sleepy || sprite.blinks {
                     pixel(column: 5, row: 5, width: 2, color: dark)
                     pixel(column: 10, row: 5, width: 2, color: dark)
                 } else {
