@@ -12,3 +12,4 @@ DerivedData/
 *.dSYM.zip
 *.dSYM
 .build/
+Macmagotchi.xcodeproj/
