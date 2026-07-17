@@ -38,3 +38,13 @@ swift run
 - View pixel-art animations in the menu bar, popover, and optional desktop pet mode.
 - Use English or Korean, select a theme, and reset pet data.
 - Receive notifications when your pet needs attention.
+
+## Customize Pets
+
+Pet artwork is code-defined pixel art. To add a pet:
+
+1. Copy `Sources/Macmagotchi/Pets/Cat.swift` and create a `PetDefinition` with `menuPixels`, `bodyPixels`, and idle/walking frames.
+2. Add its case and `definition` mapping in `Sources/Macmagotchi/Models/PetKind.swift`.
+3. Add its display name and food strings to `AppSettings.strings` in `Sources/Macmagotchi/Models/AppSettings.swift`.
+
+`PetPixel(column, row, width, height, color:)` draws a block on a 16×12 sprite grid. Use `.fur`, `.dark`, and `.cream`; pixels declared later are drawn on top.
