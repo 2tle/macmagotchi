@@ -10,7 +10,7 @@ struct MacmagotchiApp: App {
             PetPopover(pet: pet, settings: settings).frame(width: 360)
         } label: {
             HStack(spacing: 3) {
-                MenuPetIcon(kind: pet.kind, mood: pet.mood, tick: pet.animationTick)
+                MenuPetIcon(kind: pet.kind, mood: pet.mood)
                 if pet.isFocusing {
                     Text(String(format: "%02d:%02d", pet.secondsRemaining / 60, pet.secondsRemaining % 60))
                         .monospacedDigit()

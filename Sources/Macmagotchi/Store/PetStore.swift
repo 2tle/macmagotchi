@@ -10,29 +10,22 @@ final class PetStore: ObservableObject {
     @Published var mood = 82
     @Published var energy = 68
     @Published var affection = 31
-    @Published var animationTick = 0
     @Published var lastAction = "idle"
     @Published var activeTask: PetTask?
     @Published var secondsRemaining = 0
     @Published var focusTotalSeconds = 0
 
     private var timer: Timer?
-    private var animationTimer: Timer?
     private var lastNotice = Date.distantPast
     private var focusTimer: Timer?
 
     init() {
         load()
         applyElapsedTime()
-        timer = Timer.scheduledTimer(withTimeInterval: 30, repeats: true) { [weak self] _ in
+        timer = Timer.scheduledTimer(withTimeInterval: 30 * 60, repeats: true) { [weak self] _ in
             Task { @MainActor in self?.tick() }
         }
-        animationTimer = Timer.scheduledTimer(withTimeInterval: 0.55, repeats: true) { [weak self] _ in
-            Task { @MainActor in
-                guard let self else { return }
-                self.animationTick = (self.animationTick + 1) % 6
-            }
-        }
+        timer?.tolerance = 60
         requestNotifications()
         DispatchQueue.main.async { DesktopPetController.shared.show(pet: self) }
     }
@@ -62,6 +55,7 @@ final class PetStore: ObservableObject {
         guard activeTask == nil else { return }
         activeTask = task; secondsRemaining = minutes * 60; focusTotalSeconds = secondsRemaining
         focusTimer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in Task { @MainActor in self?.advanceFocus() } }
+        focusTimer?.tolerance = 0.1
     }
     private func advanceFocus() {
         secondsRemaining -= 1
@@ -85,10 +79,7 @@ final class PetStore: ObservableObject {
     }
 
     private func tick() {
-        hunger = cap(hunger - 2)
-        energy = cap(energy - 1)
-        mood = cap(mood - (hunger < 30 || energy < 25 ? 2 : 0))
-        save()
+        applyElapsedTime()
         if (hunger < 20 || energy < 20), Date.now.timeIntervalSince(lastNotice) > 60 * 60 * 3 {
             notify(hunger < 20 ? "\(name)가 배고파요" : "\(name)가 졸려요", body: hunger < 20 ? "잠깐 들러서 밥을 주세요." : "조금 쉬게 해주세요.")
             lastNotice = .now
@@ -106,12 +97,20 @@ final class PetStore: ObservableObject {
     }
     private func applyElapsedTime() {
         guard let date = PetFileStore.load()?.date else { return }
-        let periods = min(720, Int(Date.now.timeIntervalSince(date) / 1800))
-        hunger = cap(hunger - periods * 2); energy = cap(energy - periods); mood = cap(mood - periods / 2)
-        save()
+        let elapsedPeriods = Int(Date.now.timeIntervalSince(date) / 1800)
+        let periods = min(720, elapsedPeriods)
+        guard periods > 0 else { return }
+        for _ in 0..<periods {
+            hunger = cap(hunger - 2)
+            energy = cap(energy - 1)
+            mood = cap(mood - (hunger < 30 || energy < 25 ? 2 : 0))
+        }
+        let savedDate = elapsedPeriods > 720 ? Date.now : date.addingTimeInterval(TimeInterval(periods * 1800))
+        assert(elapsedPeriods > 720 || Date.now.timeIntervalSince(savedDate) < 1800)
+        save(date: savedDate)
     }
-    private func save() {
-        PetFileStore.save(SavedPet(name: name, kind: kind, hunger: hunger, mood: mood, energy: energy, affection: affection, date: .now))
+    private func save(date: Date = .now) {
+        PetFileStore.save(SavedPet(name: name, kind: kind, hunger: hunger, mood: mood, energy: energy, affection: affection, date: date))
     }
 
     // ponytail: SwiftPM runs outside an .app bundle; skip notifications there rather than crash.

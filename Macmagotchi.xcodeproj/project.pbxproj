@@ -18,6 +18,7 @@
 		A10000000000000000000009 /* DesktopPet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A20000000000000000000009 /* DesktopPet.swift */; };
 		A1000000000000000000000A /* PetPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000A /* PetPopover.swift */; };
 		A1000000000000000000000B /* PixelPet.swift in Sources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000B /* PixelPet.swift */; };
+		A1000000000000000000000D /* AppIcon.icns in Resources */ = {isa = PBXBuildFile; fileRef = A2000000000000000000000D /* AppIcon.icns */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -33,6 +34,8 @@
 		A2000000000000000000000A /* PetPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PetPopover.swift; sourceTree = "<group>"; };
 		A2000000000000000000000B /* PixelPet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PixelPet.swift; sourceTree = "<group>"; };
 		A2000000000000000000000C /* Macmagotchi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Macmagotchi.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A2000000000000000000000D /* AppIcon.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = Resources/AppIcon.icns; sourceTree = SOURCE_ROOT; };
+		A2000000000000000000000E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Resources/Info.plist; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -50,6 +53,8 @@
 			isa = PBXGroup;
 			children = (
 				A30000000000000000000002 /* Sources/Macmagotchi */,
+				A2000000000000000000000D /* AppIcon.icns */,
+				A2000000000000000000000E /* Info.plist */,
 				A30000000000000000000006 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1000000000000000000000D /* AppIcon.icns in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -220,9 +226,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GAZ2N6MA45;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Macmagotchi;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
@@ -247,9 +252,8 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = GAZ2N6MA45;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_KEY_CFBundleDisplayName = Macmagotchi;
-				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.games";
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = Resources/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",

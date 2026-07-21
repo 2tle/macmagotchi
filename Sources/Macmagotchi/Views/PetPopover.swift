@@ -25,8 +25,11 @@ struct PetPopover: View {
                     }
                     ZStack(alignment: .bottom) {
                         RoundedRectangle(cornerRadius: 22).fill(settings.theme.panel).overlay(alignment: .topTrailing) { Circle().fill(.white.opacity(0.45)).frame(width: 8).padding(18) }
-                        PixelPet(kind: pet.kind, mood: pet.mood, hungry: pet.isHungry, sleepy: pet.isSleepy, motion: .idle, tick: pet.animationTick)
-                            .frame(width: 165, height: 125).padding(.bottom, 5)
+                        AnimatedPixelPet(
+                            kind: pet.kind, mood: pet.mood, hungry: pet.isHungry,
+                            sleepy: pet.isSleepy, motion: .idle
+                        )
+                        .frame(width: 165, height: 125).padding(.bottom, 5)
                     }.frame(height: 145)
                     Text(settings.t(pet.lastAction, ["food": settings.t(pet.kind.foodKey)]))
                         .font(.subheadline.weight(.medium))
@@ -205,6 +208,19 @@ struct SettingsView: View {
                 .onChange(of: settings.showsDesktopPet) { _, visible in
                     DesktopPetController.shared.setVisible(visible, pet: pet)
                 }
+            Menu {
+                ForEach(DesktopPetPosition.allCases) { position in
+                    Button(settings.t(position.titleKey)) {
+                        settings.desktopPetPosition = position
+                        DesktopPetController.shared.setPosition(position)
+                    }
+                }
+            } label: {
+                SettingsRow(
+                    icon: "rectangle.inset.filled", title: settings.t("desktopPetPosition"),
+                    value: settings.t(settings.desktopPetPosition.titleKey)
+                )
+            }.menuStyle(.borderlessButton).disabled(!settings.showsDesktopPet)
             Divider()
             Button {
                 NSWorkspace.shared.open(URL(string: "https://github.com/2tle/macmagotchi")!)

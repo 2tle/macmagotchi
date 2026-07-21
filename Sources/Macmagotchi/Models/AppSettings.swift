@@ -29,11 +29,20 @@ enum AppLanguage: String, CaseIterable, Identifiable {
     var title: String { self == .english ? "English" : "한국어" }
 }
 
+enum DesktopPetPosition: String, CaseIterable, Identifiable {
+    case topLeft, bottomLeft, topRight, bottomRight, fixed
+    var id: String { rawValue }
+    var titleKey: String { "desktopPetPosition.\(rawValue)" }
+}
+
 @MainActor
 final class AppSettings: ObservableObject {
     @Published var language: AppLanguage { didSet { UserDefaults.standard.set(language.rawValue, forKey: "language") } }
     @Published var theme: AppTheme { didSet { UserDefaults.standard.set(theme.rawValue, forKey: "theme") } }
     @Published var showsDesktopPet: Bool { didSet { UserDefaults.standard.set(showsDesktopPet, forKey: "showsDesktopPet") } }
+    @Published var desktopPetPosition: DesktopPetPosition {
+        didSet { UserDefaults.standard.set(desktopPetPosition.rawValue, forKey: "desktopPetPosition") }
+    }
     @Published var petMinutes: Int { didSet { UserDefaults.standard.set(petMinutes, forKey: "petMinutes") } }
     @Published var playMinutes: Int { didSet { UserDefaults.standard.set(playMinutes, forKey: "playMinutes") } }
     @Published var feedMinutes: Int { didSet { UserDefaults.standard.set(feedMinutes, forKey: "feedMinutes") } }
@@ -42,6 +51,9 @@ final class AppSettings: ObservableObject {
     init() {
         let defaults = UserDefaults.standard
         showsDesktopPet = defaults.object(forKey: "showsDesktopPet") as? Bool ?? true
+        desktopPetPosition = DesktopPetPosition(
+            rawValue: defaults.string(forKey: "desktopPetPosition") ?? "bottomRight"
+        ) ?? .bottomRight
         theme = AppTheme(rawValue: defaults.string(forKey: "theme") ?? "pastel") ?? .pastel
         petMinutes = defaults.object(forKey: "petMinutes") as? Int ?? 10
         playMinutes = defaults.object(forKey: "playMinutes") as? Int ?? 30
@@ -80,7 +92,10 @@ final class AppSettings: ObservableObject {
             "resetMessage": "Your current pet data will be erased.", "cancel": "Cancel", "reset": "Reset",
             "baby": "Baby %{kind}", "growing": "Growing up", "grown": "Grown %{kind}",
             "cat": "Cat", "rabbit": "Rabbit", "bear": "Bear", "tuna": "tuna",
-            "carrot": "carrots", "honey": "honey"
+            "carrot": "carrots", "honey": "honey", "desktopPetPosition": "Position",
+            "desktopPetPosition.topLeft": "Top left", "desktopPetPosition.bottomLeft": "Bottom left",
+            "desktopPetPosition.topRight": "Top right", "desktopPetPosition.bottomRight": "Bottom right",
+            "desktopPetPosition.fixed": "Fixed"
         ],
         .korean: [
             "idle": "창밖을 구경하고 있어요", "newDay": "새로운 하루가 시작됐어요!",
@@ -98,7 +113,10 @@ final class AppSettings: ObservableObject {
             "resetMessage": "현재 펫 데이터가 모두 삭제됩니다.", "cancel": "취소", "reset": "초기화",
             "baby": "아기 %{kind}", "growing": "무럭무럭 성장 중", "grown": "다 큰 %{kind}",
             "cat": "고양이", "rabbit": "토끼", "bear": "곰", "tuna": "참치",
-            "carrot": "당근", "honey": "꿀"
+            "carrot": "당근", "honey": "꿀", "desktopPetPosition": "위치",
+            "desktopPetPosition.topLeft": "좌상단", "desktopPetPosition.bottomLeft": "좌하단",
+            "desktopPetPosition.topRight": "우상단", "desktopPetPosition.bottomRight": "우하단",
+            "desktopPetPosition.fixed": "고정"
         ]
     ]
 }
